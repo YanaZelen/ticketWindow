@@ -8,8 +8,8 @@
 1. Клонируйте репозиторий:
 
    ```bash
-   git clone https://github.com/yourusername/your-repo.git
-   cd your-repo
+   git clone https://github.com/YanaZelen/ticketWindow.git
+   cd test_stm
 
 2. Создайте файл .env в корневой директории проекта и добавьте следующие параметры:
 
