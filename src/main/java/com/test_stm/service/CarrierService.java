@@ -20,7 +20,7 @@ public class CarrierService {
     }
 
     public Carrier getCarrierById(Long id) {
-        return carrierRepository.findCarrierById(id);
+        return carrierRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found"));
     }
 
     public Carrier createCarrier(Carrier carrier) {

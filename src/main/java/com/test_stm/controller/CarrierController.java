@@ -5,11 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.test_stm.model.Carrier;
-import com.test_stm.model.Route;
 import com.test_stm.service.CarrierService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/carriers")

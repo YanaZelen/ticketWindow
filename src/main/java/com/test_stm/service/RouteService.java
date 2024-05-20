@@ -20,7 +20,7 @@ public class RouteService {
     }
 
     public Route getRouteById(Long id) {
-        return routeRepository.findRouteById(id);
+        return routeRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found"));
     }
 
     public void createRoute(Route route) {
