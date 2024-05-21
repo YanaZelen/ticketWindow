@@ -25,6 +25,8 @@ POSTGRES_DB=mydatabase
 POSTGRES_USER=myuser
 POSTGRES_PASSWORD=mypassword
 
-3. Запустите Docker Compose:
+3. Загрузите Maven Wrapper и запустите Docker Compose:
+
+mvn -N io.takari:maven:wrapper
 
 docker-compose --env-file .env up --build
