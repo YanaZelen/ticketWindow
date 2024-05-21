@@ -9,7 +9,7 @@
 
    ```bash
    git clone https://github.com/YanaZelen/ticketWindow.git
-   cd test_stm
+   cd ticketWindow
 
 2. Создайте файл .env в корневой директории проекта и добавьте следующие параметры:
 
