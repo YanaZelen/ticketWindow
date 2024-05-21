@@ -22,42 +22,35 @@ public class TicketService {
     private final TicketDAO ticketDAO = new TicketDAO();
 
     public List<Ticket> getAllTickets() {
-        return (List<Ticket>) ticketRepository.findAll();
+        return ticketDAO.getAllTickets();
     }
 
     public Ticket getTicketById(Long id) {
-        return ticketRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found"));
+        return ticketDAO.getTicketById(id);
     }
 
     public Ticket createTicket(Ticket ticket) {
-        return ticketRepository.save(ticket);
+        return ticketDAO.createTicket(ticket);
     }
 
     public void updateTicket(Ticket ticket) {
-        ticketRepository.update(ticket);
+        ticketDAO.updateTicket(ticket);
     }
 
     public void deleteTicket(Long id) {
-        ticketRepository.deleteById(id);
+        ticketDAO.deleteTicket(id);
     }
 
-    public Page<Ticket> searchTickets(Optional<String> departure, Optional<String> destination, Optional<String> carrier,
-                                      Optional<LocalDateTime> dateTime, int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        return ticketRepository.searchTickets(departure.orElse(""), destination.orElse(""), carrier.orElse(""),
-                dateTime.orElse(null), pageRequest);
+    public Page<Ticket> searchTickets(String departure, String destination,
+            String carrier, LocalDateTime dateTime, int page, int size) {
+        return ticketDAO.searchTickets(departure, destination, carrier, dateTime, page, size);
     }
 
-    public boolean purchaseTicket(Long id) throws SQLException {
+    public boolean purchaseTicket(Long id) {
         return ticketDAO.purchaseTicket(id);
     }
 
-    public List<Ticket> getAllTicketsForUser(Long userId) throws SQLException {
+    public List<Ticket> getAllTicketsForUser(Long userId) {
         return ticketDAO.getAllTicketsForUser(userId);
     }
 }
-
-/*
- * расскажи мне подробнее как мне реализовать работу с базой данных для своего приложения. сейчас у меня есть папка java, с основным кодом приложения, папка resourse с application.properties) и файл DatabaseUtil.java, так же есть dockerfile и файл docker-compose.yml
- * Я хочу использовать postgreSQL разворачивая ее с помощью докера, и так же поднимать само приложение в докере. Что мне нужно добавить в мой проект и как должны выглядеть мои dockerfile и файл docker-compose.yml?
- */

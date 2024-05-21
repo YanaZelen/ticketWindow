@@ -1,52 +1,50 @@
 package com.test_stm.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.test_stm.dao.UserDAO;
 import com.test_stm.model.User;
-import com.test_stm.repository.UserRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-        private UserDAO userDAO;
+    private UserDAO userDAO;
 
     public UserService() {
         this.userDAO = new UserDAO();
     }
 
-    public User registerUser(User user) throws SQLException {
-        if (userDAO.isUsernameTaken(user.getUsername())) {
-            throw new SQLException("Username already taken");
+    public User registerUser(User user) {
+        try {
+            if (userDAO.isUsernameTaken(user.getUsername())) {
+                throw new SQLException("Username already taken");
+            }
+            userDAO.createUser(user);
+        } catch (SQLException ex) {
+            log.error("Can't register user: " + ex.getMessage(), ex);
         }
-        userDAO.saveUser(user);
         return user;
     }
 
-    public List<User> getAllUsers() throws SQLException {
+    public List<User> getAllUsers() {
         return userDAO.getAllUsers();
     }
 
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Ticket not found"));
-    }
-
-    public User createUser(User user) {
-        return userRepository.save(user);
+        return userDAO.getUserById(id);
     }
 
     public void updateUser(User user) {
-        userRepository.update(user);
+        userDAO.updateUser(user);
     }
 
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        userDAO.deleteUser(id);
     }
 }

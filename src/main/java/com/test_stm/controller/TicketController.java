@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import com.test_stm.model.Ticket;
 import com.test_stm.service.TicketService;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -47,10 +46,10 @@ public class TicketController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<Ticket>> searchTickets(
-            @RequestParam Optional<String> departure,
-            @RequestParam Optional<String> destination,
-            @RequestParam Optional<String> carrier,
-            @RequestParam Optional<LocalDateTime> dateTime,
+            @RequestParam String departure,
+            @RequestParam String destination,
+            @RequestParam String carrier,
+            @RequestParam LocalDateTime dateTime,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Page<Ticket> result = ticketService.searchTickets(departure, destination, carrier, dateTime, page, size);
@@ -58,7 +57,7 @@ public class TicketController {
     }
 
     @PostMapping("/{id}/purchase")
-    public ResponseEntity<String> purchaseTicket(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<String> purchaseTicket(@PathVariable Long id) {
         boolean success = ticketService.purchaseTicket(id);
         if (success) {
             return ResponseEntity.ok("Ticket purchased successfully");
@@ -68,7 +67,7 @@ public class TicketController {
     }
 
     @GetMapping("/purchased")
-    public ResponseEntity<List<Ticket>> getAllTicketsForUser(@RequestParam Long userId) throws SQLException {
+    public ResponseEntity<List<Ticket>> getAllTicketsForUser(@RequestParam Long userId) {
         List<Ticket> tickets = ticketService.getAllTicketsForUser(userId);
         return ResponseEntity.ok(tickets);
     }

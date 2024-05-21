@@ -8,7 +8,6 @@ import com.test_stm.model.Route;
 import com.test_stm.service.RouteService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/routes")
@@ -26,7 +25,6 @@ public class RouteController {
     public ResponseEntity<String> getRouteById(@PathVariable Long id) {
         return ResponseEntity.ok(routeService.getRouteById(id).toString());
     }
-    
 
     @PostMapping
     public void createRoute(@RequestBody Route route) {

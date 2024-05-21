@@ -32,12 +32,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
-        try {
-            userService.registerUser(user);
-            return ResponseEntity.ok("User registered successfully");
-        } catch (SQLException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
-        }
+        userService.registerUser(user);
+        return ResponseEntity.ok("User registered successfully");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
