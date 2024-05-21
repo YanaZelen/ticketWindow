@@ -1,4 +1,4 @@
-package com.test_stm;
+package com.stm;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,11 +1,11 @@
-package com.test_stm.controller;
+package com.stm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.test_stm.model.Route;
-import com.test_stm.service.RouteService;
+import com.stm.model.Route;
+import com.stm.service.RouteService;
 
 import java.util.List;
 

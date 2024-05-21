@@ -1,4 +1,4 @@
-package com.test_stm.dao;
+package com.stm.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.test_stm.DatabaseUtil;
-import com.test_stm.model.Route;
+import com.stm.DatabaseUtil;
+import com.stm.model.Route;
 
 import lombok.extern.slf4j.Slf4j;
 

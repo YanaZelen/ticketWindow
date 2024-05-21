@@ -1,4 +1,4 @@
-package com.test_stm.dao;
+package com.stm.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,9 +8,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.test_stm.DatabaseUtil;
-import com.test_stm.model.Carrier;
-import com.test_stm.model.Ticket;
+import com.stm.DatabaseUtil;
+import com.stm.model.Carrier;
+import com.stm.model.Ticket;
 
 import lombok.extern.slf4j.Slf4j;
 

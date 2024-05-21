@@ -1,4 +1,4 @@
-package com.test_stm.model;
+package com.stm.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

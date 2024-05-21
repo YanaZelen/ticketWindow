@@ -1,23 +1,16 @@
-package com.test_stm.service;
+package com.stm.service;
 
-import com.test_stm.dao.TicketDAO;
-import com.test_stm.model.Ticket;
-import com.test_stm.repository.TicketRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
+import com.stm.dao.TicketDAO;
+import com.stm.model.Ticket;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TicketService {
-
-    @Autowired
-    private TicketRepository ticketRepository;
 
     private final TicketDAO ticketDAO = new TicketDAO();
 

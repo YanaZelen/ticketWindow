@@ -1,9 +1,9 @@
-package com.test_stm.service;
+package com.stm.service;
 
 import org.springframework.stereotype.Service;
 
-import com.test_stm.dao.UserDAO;
-import com.test_stm.model.User;
+import com.stm.dao.UserDAO;
+import com.stm.model.User;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,11 +1,11 @@
-package com.test_stm.controller;
+package com.stm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.test_stm.model.Carrier;
-import com.test_stm.service.CarrierService;
+import com.stm.model.Carrier;
+import com.stm.service.CarrierService;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.test_stm.controller;
+package com.stm.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,8 +6,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import com.test_stm.model.User;
-import com.test_stm.service.UserService;
+import com.stm.model.User;
+import com.stm.service.UserService;
 
 import java.sql.SQLException;
 import java.util.HashMap;

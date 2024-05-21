@@ -1,12 +1,12 @@
-package com.test_stm.controller;
+package com.stm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.test_stm.model.Ticket;
-import com.test_stm.service.TicketService;
+import com.stm.model.Ticket;
+import com.stm.service.TicketService;
 
 import java.time.LocalDateTime;
 import java.util.List;

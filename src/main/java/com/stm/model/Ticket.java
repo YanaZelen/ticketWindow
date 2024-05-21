@@ -1,4 +1,4 @@
-package com.test_stm.model;
+package com.stm.model;
 
 import java.time.LocalDateTime;
 

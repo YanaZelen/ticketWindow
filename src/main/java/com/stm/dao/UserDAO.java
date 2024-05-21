@@ -1,11 +1,11 @@
-package com.test_stm.dao;
+package com.stm.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.test_stm.DatabaseUtil;
-import com.test_stm.model.User;
+import com.stm.DatabaseUtil;
+import com.stm.model.User;
 
 import lombok.extern.slf4j.Slf4j;
 

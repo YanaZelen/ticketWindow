@@ -1,9 +1,10 @@
-package com.test_stm.service;
+package com.stm.service;
 
 import org.springframework.stereotype.Service;
 
-import com.test_stm.dao.CarrierDAO;
-import com.test_stm.model.Carrier;
+import com.stm.dao.CarrierDAO;
+import com.stm.model.Carrier;
+
 import java.util.List;
 
 @Service

@@ -1,4 +1,4 @@
-package com.test_stm.dao;
+package com.stm.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import com.test_stm.DatabaseUtil;
-import com.test_stm.model.Ticket;
+import com.stm.DatabaseUtil;
+import com.stm.model.Ticket;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -91,7 +91,7 @@ public class TicketDAO {
             }
         } catch (SQLException ex) {
             log.error("Can't execute SQL: " + sql + " due to error: ", ex);
-            return null; // Optionally return null or throw a custom exception if needed
+            return null;
         }
         return ticket;
     }
@@ -205,7 +205,8 @@ public class TicketDAO {
     public Page<Ticket> searchTickets(String departure, String destination, String carrier, LocalDateTime dateTime,
             int pageNumber, int pageSize) {
         List<Ticket> tickets = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM tickets WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM tickets WHERE 1=1"); // заведомо правдивое условие для
+                                                                                  // последующего добавления условий
         List<Object> params = new ArrayList<>();
 
         addSearchCriteria(sql, params, "departure", departure);
@@ -216,7 +217,6 @@ public class TicketDAO {
             params.add(dateTime);
         }
 
-        // Add LIMIT for pagination
         sql.append(" LIMIT ? OFFSET ?");
         params.add(pageSize);
         params.add(pageNumber * pageSize);
