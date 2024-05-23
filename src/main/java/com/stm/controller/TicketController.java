@@ -3,16 +3,22 @@ package com.stm.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.stm.model.Ticket;
 import com.stm.service.TicketService;
+
+//import io.swagger.annotations.Api;
+import jakarta.validation.Valid;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")
+@Validated
+//@Api(tags = "Ticket Management")
 public class TicketController {
     @Autowired
     private TicketService ticketService;
@@ -28,7 +34,7 @@ public class TicketController {
     }
 
     @PostMapping
-    public void createTicket(@RequestBody Ticket ticket) {
+    public void createTicket(@Valid @RequestBody Ticket ticket) {
         ticketService.createTicket(ticket);
     }
 

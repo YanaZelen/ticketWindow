@@ -30,3 +30,7 @@ POSTGRES_PASSWORD=mypassword
 mvn -N io.takari:maven:wrapper
 
 docker-compose --env-file .env up --build
+
+4. Документация Swagger
+
+Документация доступна по ссылке http://localhost:8080/swagger-ui.html после запуска приложения
