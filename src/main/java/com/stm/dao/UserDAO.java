@@ -4,12 +4,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.stm.DatabaseUtil;
 import com.stm.model.User;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Repository
 public class UserDAO {
 
     public void createUser(User user) {
@@ -80,6 +83,28 @@ public class UserDAO {
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setLong(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User();
+                    user.setId(rs.getLong("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                }
+            }
+        } catch (SQLException ex) {
+            log.error("Can't execute SQL: " + ex.getMessage(), ex);
+        }
+        return user;
+    }
+
+    public User getUserByName(String name) {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE name = ?";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, name);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     user = new User();

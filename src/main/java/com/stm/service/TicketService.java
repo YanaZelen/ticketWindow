@@ -35,7 +35,7 @@ public class TicketService {
     }
 
     public Page<Ticket> searchTickets(String departure, String destination,
-            String carrier, LocalDateTime dateTime, int page, int size) {
+            int carrier, LocalDateTime dateTime, int page, int size) {
         return ticketDAO.searchTickets(departure, destination, carrier, dateTime, page, size);
     }
 

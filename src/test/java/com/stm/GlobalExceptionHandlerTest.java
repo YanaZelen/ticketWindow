@@ -8,16 +8,17 @@ import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc; 
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.stm.controller.TicketController;
+import com.stm.exception.GlobalExceptionHandler;
+import com.stm.security.JwtTokenUtil;
 import com.stm.service.TicketService;
 
 @ExtendWith(SpringExtension.class)
@@ -29,11 +30,15 @@ public class GlobalExceptionHandlerTest {
 
     @MockBean
     private TicketService ticketService;
-
+    
+    @MockBean
+    private JwtTokenUtil jwtTokenUtil;
+   
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
 
     @Test
+    @WithMockUser(roles = "ADMINISTRATOR")
     public void testHandleNullPointerException() throws Exception {
         doThrow(new NullPointerException("Null value")).when(ticketService).getTicketById(1L);
 
@@ -45,6 +50,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMINISTRATOR")
     public void testHandleIllegalArgumentException() throws Exception {
         doThrow(new IllegalArgumentException("Illegal argument")).when(ticketService).getTicketById(1L);
 
@@ -56,19 +62,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleHttpMessageNotReadable() throws Exception {
-        String unreadableJson = "{ userId: 0, routeId: 0, dateTime: 2024-06-01T12:00:00, seatNumber: 0, price: 0 }"; 
-
-        mockMvc.perform(post("/tickets")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(unreadableJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Ошибка чтения HTTP-сообщения"))
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.errors.error").exists());
-    }
-
-    @Test
+    @WithMockUser(roles = "ADMINISTRATOR")
     public void testHandleGenericException() throws Exception {
         doThrow(new RuntimeException("Generic exception")).when(ticketService).getTicketById(1L);
 

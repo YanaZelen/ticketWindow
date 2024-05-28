@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
 
 import com.stm.DatabaseUtil;
 import com.stm.model.Ticket;
@@ -19,6 +20,7 @@ import com.stm.model.Ticket;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Repository
 public class TicketDAO {
 
     public List<Ticket> getAllTickets() {
@@ -202,18 +204,27 @@ public class TicketDAO {
         return tickets;
     }
 
-    public Page<Ticket> searchTickets(String departure, String destination, String carrier, LocalDateTime dateTime,
+    public Page<Ticket> searchTickets(String departure, String destination, int carrier, LocalDateTime dateTime,
             int pageNumber, int pageSize) {
         List<Ticket> tickets = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM tickets WHERE 1=1"); // заведомо правдивое условие для
-                                                                                  // последующего добавления условий
-        List<Object> params = new ArrayList<>();
+        List<Long> routeIds = getRouteIds(departure, destination, carrier);
 
-        addSearchCriteria(sql, params, "departure", departure);
-        addSearchCriteria(sql, params, "destination", destination);
-        addSearchCriteria(sql, params, "carrier", carrier);
+        if (routeIds.isEmpty()) {
+            return new PageImpl<>(tickets, PageRequest.of(pageNumber, pageSize), 0);
+        }
+
+        StringBuilder sql = new StringBuilder("SELECT * FROM ticket WHERE route_id IN (");
+        for (int i = 0; i < routeIds.size(); i++) {
+            sql.append("?");
+            if (i < routeIds.size() - 1) {
+                sql.append(", ");
+            }
+        }
+        sql.append(")");
+
+        List<Object> params = new ArrayList<>(routeIds);
         if (dateTime != null) {
-            sql.append(" AND dateTime = ?");
+            sql.append(" AND date_time = ?");
             params.add(dateTime);
         }
 
@@ -236,27 +247,87 @@ public class TicketDAO {
             return null;
         }
 
-        long totalRecords = getTotalCount(departure, destination, carrier, dateTime);
+        long totalRecords = getTotalCount(routeIds, dateTime);
 
         return new PageImpl<>(tickets, PageRequest.of(pageNumber, pageSize), totalRecords);
     }
 
-    private void addSearchCriteria(StringBuilder sql, List<Object> params, String column, String value) {
-        if (value != null) {
-            sql.append(" AND ").append(column).append(" LIKE ?");
-            params.add("%" + value + "%");
+    private List<Long> getRouteIds(String departurePoint, String destinationPoint, int carrierId) {
+        List<Long> routeIds = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT id FROM route WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        addSearchCriteria(sql, params, "departurePoint", departurePoint);
+        addSearchCriteria(sql, params, "destinationPoint", destinationPoint);
+        addSearchCriteria(sql, params, "carrierId", carrierId);
+
+        try (Connection conn = DatabaseUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+            setParameters(pstmt, params);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    routeIds.add(rs.getLong("id"));
+                }
+            }
+        } catch (SQLException ex) {
+            log.error("Can't execute SQL: " + sql + " due to error: ", ex);
         }
+
+        return routeIds;
+    }
+
+    private long getTotalCount(List<Long> routeIds, LocalDateTime dateTime) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM ticket WHERE route_id IN (");
+        for (int i = 0; i < routeIds.size(); i++) {
+            sql.append("?");
+            if (i < routeIds.size() - 1) {
+                sql.append(", ");
+            }
+        }
+        sql.append(")");
+
+        List<Object> params = new ArrayList<>(routeIds);
+        if (dateTime != null) {
+            sql.append(" AND date_time = ?");
+            params.add(dateTime);
+        }
+
+        try (Connection conn = DatabaseUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+
+            setParameters(pstmt, params);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+            }
+        } catch (SQLException ex) {
+            log.error("Can't execute SQL: " + sql + " due to error: ", ex);
+        }
+
+        return 0;
     }
 
     private void setParameters(PreparedStatement pstmt, List<Object> params) throws SQLException {
-        int index = 1;
-        for (Object param : params) {
-            if (param instanceof LocalDateTime) {
-                pstmt.setTimestamp(index, Timestamp.valueOf((LocalDateTime) param));
-            } else {
-                pstmt.setObject(index, param);
-            }
-            index++;
+        for (int i = 0; i < params.size(); i++) {
+            pstmt.setObject(i + 1, params.get(i));
+        }
+    }
+
+    private void addSearchCriteria(StringBuilder sql, List<Object> params, String field, String value) {
+        if (value != null && !value.isEmpty()) {
+            sql.append(" AND ").append(field).append(" = ?");
+            params.add(value);
+        }
+    }
+
+    private void addSearchCriteria(StringBuilder sql, List<Object> params, String field, Integer value) {
+        if (value != null) {
+            sql.append(" AND ").append(field).append(" = ?");
+            params.add(value);
         }
     }
 
@@ -269,34 +340,5 @@ public class TicketDAO {
         ticket.setPrice(rs.getDouble("price"));
         ticket.setUserId(rs.getLong("user_id"));
         return ticket;
-    }
-
-    private long getTotalCount(String departure, String destination, String carrier, LocalDateTime dateTime) {
-        StringBuilder countSql = new StringBuilder("SELECT COUNT(*) FROM tickets WHERE 1=1");
-        List<Object> params = new ArrayList<>();
-
-        addSearchCriteria(countSql, params, "departure", departure);
-        addSearchCriteria(countSql, params, "destination", destination);
-        addSearchCriteria(countSql, params, "carrier", carrier);
-        if (dateTime != null) {
-            countSql.append(" AND dateTime = ?");
-            params.add(dateTime);
-        }
-
-        try (Connection conn = DatabaseUtil.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(countSql.toString())) {
-
-            setParameters(pstmt, params);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getLong(1);
-                }
-            }
-        } catch (SQLException ex) {
-            log.error("Can't execute SQL: " + countSql + " due to error: ", ex);
-            return 0;
-        }
-        return 0;
     }
 }

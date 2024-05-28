@@ -2,6 +2,7 @@ package com.stm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import com.stm.model.Ticket;
 import com.stm.service.TicketService;
 
-//import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 
 import java.time.LocalDateTime;
@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/tickets")
 @Validated
-//@Api(tags = "Ticket Management")
 public class TicketController {
     @Autowired
     private TicketService ticketService;
@@ -33,18 +32,18 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.getTicketById(id));
     }
 
-    @PostMapping
+    @PostMapping("/admin")
     public void createTicket(@Valid @RequestBody Ticket ticket) {
         ticketService.createTicket(ticket);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public void updateTicket(@PathVariable Long id, @RequestBody Ticket ticket) {
         ticket.setId(id);
         ticketService.updateTicket(ticket);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public void deleteTicket(@PathVariable Long id) {
         ticketService.deleteTicket(id);
     }
@@ -53,8 +52,8 @@ public class TicketController {
     public ResponseEntity<Page<Ticket>> searchTickets(
             @RequestParam String departure,
             @RequestParam String destination,
-            @RequestParam String carrier,
-            @RequestParam LocalDateTime dateTime,
+            @RequestParam Integer carrier,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Page<Ticket> result = ticketService.searchTickets(departure, destination, carrier, dateTime, page, size);

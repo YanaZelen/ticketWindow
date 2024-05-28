@@ -21,12 +21,24 @@ public class CarrierController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getCarrierById(@PathVariable Long id) {
-        return ResponseEntity.ok(carrierService.getCarrierById(id).toString());
+    public ResponseEntity<Carrier> getCarrierById(@PathVariable Long id) {
+        Carrier carrier = carrierService.getCarrierById(id);
+        return ResponseEntity.ok(carrier);
     }
 
     @PostMapping
     public Carrier createCarrier(@RequestBody Carrier carrier) {
         return carrierService.createCarrier(carrier);
+    }
+
+    @PutMapping("/{id}")
+    public void updateCarrier(@PathVariable Long id, @RequestBody Carrier carrier) {
+        carrier.setId(id);
+        carrierService.updateCarrier(carrier);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCarrier(@PathVariable Long id) {
+        carrierService.deleteCarrier(id);
     }
 }

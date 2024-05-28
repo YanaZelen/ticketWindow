@@ -5,13 +5,10 @@ import org.springframework.stereotype.Service;
 import com.stm.dao.UserDAO;
 import com.stm.model.User;
 
-import lombok.extern.slf4j.Slf4j;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
-@Slf4j
 public class UserService {
 
     private UserDAO userDAO;
@@ -21,15 +18,17 @@ public class UserService {
     }
 
     public User registerUser(User user) {
-        try {
-            if (userDAO.isUsernameTaken(user.getUsername())) {
-                throw new SQLException("Username already taken");
-            }
-            userDAO.createUser(user);
-        } catch (SQLException ex) {
-            log.error("Can't register user: " + ex.getMessage(), ex);
+        if (userDAO.isUsernameTaken(user.getUsername())) {
+            throw new RuntimeException("Пользователь с таким именем уже существует");
         }
+
+        userDAO.createUser(user);
         return user;
+    }
+
+    public User getByUsername(String username) {
+        return userDAO.getUserByName(username);
+
     }
 
     public List<User> getAllUsers() {

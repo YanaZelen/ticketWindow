@@ -7,12 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.stm.DatabaseUtil;
 import com.stm.model.Route;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Repository
 public class RouteDAO {
 
     public List<Route> getAllRoutes() {

@@ -1,50 +1,48 @@
 package com.stm.controller;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import com.stm.model.User;
 import com.stm.service.UserService;
-
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
+    @Autowired
     private UserService userService;
 
-    public UserController() {
-        this.userService = new UserService();
-    }
-
     @GetMapping
-    public List<User> getAllUsers() throws SQLException {
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @PostMapping
-    public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
-        userService.registerUser(user);
-        return ResponseEntity.ok("User registered successfully");
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return ResponseEntity.badRequest().body(errors);
+    @PostMapping
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        User newUser = userService.registerUser(user);
+        return ResponseEntity.ok(newUser);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateUser(@PathVariable Long id, @RequestBody User user) {
+        user.setId(id);
+        userService.updateUser(user);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
     }
 }

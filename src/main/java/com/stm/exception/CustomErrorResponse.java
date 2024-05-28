@@ -1,4 +1,4 @@
-package com.stm;
+package com.stm.exception;
 
 import java.util.Map;
 

@@ -2,7 +2,9 @@ package com.stm.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.validation.constraints.NotEmpty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -12,8 +14,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table("ticket")
 public class Ticket {
 
+    @Id
     private Long id;
 
     @NotNull(message = "User ID cannot be null")
@@ -32,4 +36,17 @@ public class Ticket {
     private double price;
 
     private boolean isAvailable;
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", user id='" + userId + '\'' +
+                ", route id='" + routeId + '\'' +
+                ", date and time='" + dateTime + '\'' +
+                ", seat number='" + seatNumber + '\'' +
+                ", price='" + price + '\'' +
+                ", availability='" + isAvailable + '\'' +
+                '}';
+    }
 }
