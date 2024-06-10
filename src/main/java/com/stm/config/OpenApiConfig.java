@@ -1,4 +1,4 @@
-package com.stm;
+package com.stm.config;
 
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
