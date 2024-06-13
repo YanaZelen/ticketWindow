@@ -15,9 +15,9 @@ import java.util.Properties;
 @SpringBootApplication(exclude = {JdbcTemplateAutoConfiguration.class})
 public class App {
 
-    private final static String TOPIC = ConfigUtil.getKafkaCarsKafkaTopic();
-    private final static String CLIENT_ID = ConfigUtil.getKafkaClientId();
-    private final static String BOOTSTRAP_SERVERS = ConfigUtil.getKafkaAdress();
+    private final static String TOPIC = "test-topic-14";
+    private final static String CLIENT_ID = "test-service-group-id";
+    private final static String BOOTSTRAP_SERVERS = "localhost:9092";
 
     private static final Logger logger = LoggerFactory.getLogger("App");
 

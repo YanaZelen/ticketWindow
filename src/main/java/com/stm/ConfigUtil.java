@@ -17,7 +17,6 @@ public class ConfigUtil {
 
     public static String getKafkaCarsKafkaTopic() {
         Config conf = ConfigFactory.load();
-        return conf.getString("kafka-topic-cars");
+        return conf.getString("kafka-topic-user");
     }
-
 }
