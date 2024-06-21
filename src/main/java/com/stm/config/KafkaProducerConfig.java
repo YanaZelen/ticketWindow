@@ -1,36 +1,26 @@
-//package com.stm.config;
-//
-//import com.stm.model.User;
-//import org.apache.kafka.clients.producer.ProducerConfig;
-//import org.apache.kafka.common.serialization.StringSerializer;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-//import org.springframework.kafka.core.KafkaTemplate;
-//import org.springframework.kafka.core.ProducerFactory;
-//import org.springframework.kafka.support.serializer.JsonSerializer;
-//
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//@Configuration
-//public class KafkaProducerConfig {
-//
-//    @Value("${kafka.bootstrapAddress}")
-//    private String bootstrapAddress;
-//
-//    @Bean
-//    public ProducerFactory<String, User> producerFactory() {
-//        Map<String, Object> configProps = new HashMap<>();
-//        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-//        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-//        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-//        return new DefaultKafkaProducerFactory<>(configProps);
-//    }
-//
-//    @Bean
-//    public KafkaTemplate<String, User> kafkaTemplate() {
-//        return new KafkaTemplate<>(producerFactory());
-//    }
-//}
+package com.stm.config;
+
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.Properties;
+@Configuration
+public class KafkaProducerConfig {
+
+    private final static String BOOTSTRAP_SERVERS = "localhost:9092";
+    private final static String CLIENT_ID = "test-service-group-id";
+
+    @Bean
+    public Producer<String, String> producer() {
+        Properties props = new Properties();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+        props.put(ProducerConfig.CLIENT_ID_CONFIG, CLIENT_ID);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        return new KafkaProducer<>(props);
+    }
+}

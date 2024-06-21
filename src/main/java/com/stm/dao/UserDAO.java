@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.stm.DatabaseUtil;
+import com.stm.util.DatabaseUtil;
 import com.stm.model.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class UserDAO {
                 throw new SQLException("Username already taken");
             }
 
-            String sql = "INSERT INTO user (username, password) VALUES (?, ?)";
+            String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
             try (Connection conn = DatabaseUtil.getConnection();
                     PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 stmt.setString(1, user.getUsername());
@@ -40,7 +40,7 @@ public class UserDAO {
     }
 
     public boolean isUsernameTaken(String username) {
-        String sql = "SELECT COUNT(*) FROM user WHERE username = ?";
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
@@ -99,7 +99,7 @@ public class UserDAO {
 
     public User getUserByName(String name) {
         User user = null;
-        String sql = "SELECT * FROM users WHERE name = ?";
+        String sql = "SELECT * FROM users WHERE username = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {

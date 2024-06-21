@@ -4,13 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.stm.DatabaseUtil;
+import com.stm.util.DatabaseUtil;
 import com.stm.model.Carrier;
-import com.stm.model.Ticket;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +37,7 @@ public class CarrierDAO {
     }
 
     public Carrier createCarrier(Carrier carrier) {
-        String sql = "INSERT INTO carrier (name, phone) VALUES (?, ?)";
+        String sql = "INSERT INTO carriers (name, phone) VALUES (?, ?)";
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, carrier.getName());

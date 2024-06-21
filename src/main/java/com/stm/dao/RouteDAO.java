@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.stm.DatabaseUtil;
+import com.stm.util.DatabaseUtil;
 import com.stm.model.Route;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class RouteDAO {
     }
 
     public void createRoute(Route route) {
-        String sql = "INSERT INTO route (departure_point, destination_point, carrier_id, duration_in_minutes) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO routes (departure_point, destination_point, carrier_id, duration_minutes) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, route.getDeparturePoint());
@@ -87,7 +87,7 @@ public class RouteDAO {
     }
 
     public void updateRoute(Route route) {
-        String sql = "UPDATE routes SET departure_point = ?, destination_point = ?, carrier_id = ?, duration_in_minutes = ? WHERE id = ?";
+        String sql = "UPDATE routes SET departure_point = ?, destination_point = ?, carrier_id = ?, duration_minutes = ? WHERE id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {

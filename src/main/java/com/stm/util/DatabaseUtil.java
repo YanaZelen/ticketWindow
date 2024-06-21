@@ -1,4 +1,4 @@
-package com.stm;
+package com.stm.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

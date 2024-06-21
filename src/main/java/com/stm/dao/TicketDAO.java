@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import com.stm.DatabaseUtil;
+import com.stm.util.DatabaseUtil;
 import com.stm.model.Ticket;
 
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +74,7 @@ public class TicketDAO {
     }
 
     public Ticket createTicket(Ticket ticket) {
-        String sql = "INSERT INTO tickets (route_id, dateTime, seat_number, price, is_available) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tickets (route_id, date_time, seat_number, price, is_available) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, ticket.getRouteId());
@@ -99,7 +99,7 @@ public class TicketDAO {
     }
 
     public void updateTicket(Ticket ticket) {
-        String sql = "UPDATE tickets SET route_id = ?, dateTime = ?, seat_number = ?, price = ?, is_available = ? WHERE id = ?";
+        String sql = "UPDATE tickets SET route_id = ?, date_time = ?, seat_number = ?, price = ?, is_available = ? WHERE id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
