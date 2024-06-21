@@ -13,8 +13,16 @@
    git clone https://github.com/YanaZelen/ticketWindow.git
    cd ticketWindow
 
-3. Соберите приложение и запустите Docker Compose:
+2. Запустите Docker Compose:
+   
+   docker-compose up (в Docker соберуться Kafka и PosgreSQl)
+
+3. Соберите и запустите приложение:
 
    mvn clean install
-   
-   docker-compose up 
+   java -jar target/stm-1.0-SNAPSHOT.jar
+
+//////////////////////////////////////////
+   Неактуально
+   docker build -f app.Dockerfile -t app .
+   docker run -p 8080:8080 app
