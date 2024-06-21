@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stm.model.Route;
 import com.stm.security.JwtTokenUtil;
 import com.stm.security.SecurityConfig;
+import com.stm.service.KafkaProducerService;
 import com.stm.service.RouteService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,9 @@ public class RouteControllerTest {
 
     @MockBean
     private JwtTokenUtil jwtTokenUtil;
+
+    @MockBean
+    private KafkaProducerService kafkaProducerService;
 
     private Route route1;
     private Route route2;

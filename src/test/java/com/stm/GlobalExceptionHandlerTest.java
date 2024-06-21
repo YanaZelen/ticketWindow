@@ -2,6 +2,7 @@ package com.stm;
 
 import static org.mockito.Mockito.doThrow;
 
+import com.stm.service.KafkaProducerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,6 +37,9 @@ public class GlobalExceptionHandlerTest {
    
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
+
+    @MockBean
+    private KafkaProducerService kafkaProducerService;
 
     @Test
     @WithMockUser(roles = "ADMINISTRATOR")

@@ -5,6 +5,7 @@ import com.stm.security.AuthRequest;
 import com.stm.security.JwtTokenUtil;
 import com.stm.security.SecurityConfig;
 
+import com.stm.service.KafkaProducerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ public class AuthControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private KafkaProducerService kafkaProducerService;
 
     @Test
     public void testLoginSuccess() throws Exception {

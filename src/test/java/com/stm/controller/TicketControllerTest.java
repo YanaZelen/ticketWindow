@@ -1,5 +1,6 @@
 package com.stm.controller;
 
+import com.stm.service.KafkaProducerService;
 import com.stm.service.TicketService;
 import com.stm.model.Ticket;
 import com.stm.security.JwtTokenUtil;
@@ -40,6 +41,9 @@ public class TicketControllerTest {
 
     @MockBean
     private JwtTokenUtil jwtTokenUtil;
+
+    @MockBean
+    private KafkaProducerService kafkaProducerService;
 
     @Test
     @WithMockUser(roles = "USER")

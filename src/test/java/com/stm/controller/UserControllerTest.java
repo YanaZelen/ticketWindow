@@ -10,6 +10,7 @@ import com.stm.model.Role;
 import com.stm.model.User;
 import com.stm.security.JwtTokenUtil;
 import com.stm.security.SecurityConfig;
+import com.stm.service.KafkaProducerService;
 import com.stm.service.UserService;
 
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,9 @@ public class UserControllerTest {
 
     @MockBean
     private JwtTokenUtil jwtTokenUtil;
+
+    @MockBean
+    private KafkaProducerService kafkaProducerService;
 
     @Test
     @WithMockUser(roles = "ADMINISTRATOR")

@@ -2,6 +2,7 @@ package com.stm.controller;
 
 import static org.mockito.Mockito.when;
 
+import com.stm.service.KafkaProducerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,6 +35,9 @@ public class CarrierControllerTest {
 
     @MockBean
     private JwtTokenUtil jwtTokenUtil;
+
+    @MockBean
+    private KafkaProducerService kafkaProducerService;
 
     @Test
     @WithMockUser(roles = "ADMINISTRATOR")

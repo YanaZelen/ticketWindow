@@ -42,9 +42,11 @@ CREATE TABLE routes (
 -- Create a Ticket Table
 CREATE TABLE tickets (
     id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
     route_id INT NOT NULL,
-    travel_date TIMESTAMP NOT NULL,
+    date_time TIMESTAMP NOT NULL,
     seat_number VARCHAR(10) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
+    is_available BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (route_id) REFERENCES routes(id)
 );
