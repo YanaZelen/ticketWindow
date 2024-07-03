@@ -1,5 +1,6 @@
 package com.stm.service;
 
+import com.stm.kafka.MessageGenerator;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -16,20 +17,24 @@ public class KafkaProducerService {
     @Autowired
     private Producer<String, String> producer;
 
-    private static final String TOPIC_PROFIT_LOSS = "profitLoss-topic";
-    private static final String TOPIC_DEPOSIT = "deposit-topic";
-    private static final String TOPIC_ACCOUNT = "account-topic";
+    @Autowired
+    private MessageGenerator messageGenerator;
+
+    private static final String TOPIC_ACCOUNT_FEE = "account-fee-topic";
+    private static final String TOPIC_ACCOUNT_OPERATION = "account-operation-topic";
+    private static final String TOPIC_DEPOSIT_LOSS = "deposit-loss-topic";
+    private static final String TOPIC_DEPOSIT_OPERATION = "deposit-operation-topic";
 
     public void sendMessages() {
         while (true) {
             try {
-                sendMessageAsync(TOPIC_PROFIT_LOSS, "key1", "some information about profit and loss");
-                sendMessageAsync(TOPIC_DEPOSIT, "key1", "some inf about deposits");
-                sendMessageAsync(TOPIC_ACCOUNT, "key1", "some inf-tion about accounts");
+//                sendMessageAsync(TOPIC_PROFIT_LOSS, "key1", "some information about profit and loss");
+//                sendMessageAsync(TOPIC_DEPOSIT, "key1", "some inf about deposits");
 
-                sendMessageSync(TOPIC_PROFIT_LOSS, "key2", "some information about profit and loss");
-                sendMessageSync(TOPIC_DEPOSIT, "key2", "some inf about deposits");
-                sendMessageSync(TOPIC_ACCOUNT, "key2", "some inf-tion about accounts");
+                sendMessageAsync(TOPIC_ACCOUNT_FEE, "key1", messageGenerator.generateAccountFeeMessage());
+                sendMessageAsync(TOPIC_ACCOUNT_OPERATION, "key1", messageGenerator.generateAccountOperationMessage());
+                sendMessageAsync(TOPIC_DEPOSIT_LOSS, "key1", messageGenerator.generateDepositLossMessage());
+                sendMessageAsync(TOPIC_DEPOSIT_OPERATION, "key1", messageGenerator.generateDepositOperationMessage());
             } catch (Exception e) {
                 logger.error("Error sending messages: {}", e.getMessage());
             }
